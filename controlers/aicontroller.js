@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import sql from "../db";
+import sql from "../db.js";
 import { clerkClient } from "@clerk/express";
 
 const AI = new OpenAI({
