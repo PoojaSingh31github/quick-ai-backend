@@ -2,18 +2,16 @@
 
 import { clerkClient, getAuth } from "@clerk/express";
 
+
+
 export const checkPremiumUser = async (req, res, next) => {
   try {
     const { userId, has } = await req.auth();
     const hasPremium = await has({ plan: "premium" });
-
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized ❌" });
     }
-
     const user = await clerkClient.users.getUser(userId);
-    const plan = user?.publicMetadata?.plan;
-
     if (!hasPremium && user?.privateMetadata?.free_usage) {
       req.free_usage = user.privateMetadata.free_usage;
     } else {
@@ -26,6 +24,6 @@ export const checkPremiumUser = async (req, res, next) => {
     next();
   } catch (err) {
     console.error("Middleware error:", err);
-    res.status(500).json({ message: "Internal server error 🚨" });
+    res.status(500).json({ message: err.message || "Internal server error 🚨" });
   }
 };
