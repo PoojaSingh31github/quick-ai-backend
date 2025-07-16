@@ -198,7 +198,6 @@ export const removeObjectImg = async (req, res) => {
           "this feature is only available for premium users. Please upgrade your plan.",
       });
     }
-    const { public_id } = await cloudinary.uploader.upload(img.path);
 
     const { eager } = await cloudinary.uploader.upload(img.path, {
       eager: [{ effect: `gen_remove:${object}` }],
@@ -206,6 +205,11 @@ export const removeObjectImg = async (req, res) => {
     });
 
     const imgURl = eager?.[0]?.secure_url;
+    if (!imgURl) {
+      return res
+        .status(500)
+        .json({ message: "Image URL not generated properly" });
+    }
 
     await sql` INSERT INTO creation (user_id, prompt, context, type) VALUES (${userId}, ${`Remove ${object} from image`}, ${imgURl}, 'image')`;
 
