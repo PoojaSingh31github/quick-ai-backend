@@ -21,13 +21,25 @@ This is the backend server for **Quick AI**, a generative AI web application tha
 ```
 ai-backend/
 │
-├── .env # Environment variables
-├── routes/ # Express routes
-├── controllers/ # Logic handlers
-├── utils/ # Helper functions
-├── middleware/ # Auth and error handling
-├── uploads
-├── index.js # Entry point
+├── controllers/                  # Logic for handling routes
+│   ├── aicontroller.js           # Handles AI features (generate, remove bg, etc.)
+│   └── usercontroller.js         # Handles user-specific operations
+│
+├── middlewares/                 # Middleware functions
+│   └── auth.js                   # Auth middleware to protect routes
+│
+├── routes/                      # API route definitions
+│   ├── routes.js                 # AI-related endpoints 
+│   └── userRoutes.js             # User operations (likes, dashboard, etc.)
+│
+├── cloudinary.js                # Cloudinary config & utils
+├── db.js                        # NeonDB / Postgres database connection
+├── multer.js                    # File upload config (image/pdf handling)
+├── index.js                     # App entry point
+├── package.json
+├── .gitignore
+├── README.md
+
 ```
 
 ## 🔐 Environment Variables (`.env`)
